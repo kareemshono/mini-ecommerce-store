@@ -123,7 +123,7 @@ const Navbar = () => {
 
           {showCartPreview && items.length > 0 && (
             <div
-              className="absolute top-full mt-3 right-0 w-80 bg-white rounded-xl shadow-2xl border overflow-hidden z-50"
+              className="absolute top-full mt-3 left-0 w-80 bg-white rounded-xl shadow-2xl border overflow-hidden z-50"
               onMouseEnter={() => setShowCartPreview(true)}
               onMouseLeave={() => setShowCartPreview(false)}
             >
