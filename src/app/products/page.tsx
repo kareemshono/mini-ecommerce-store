@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect, useMemo, Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -13,8 +14,7 @@ import {
 import ProductItem from "../components/productItem/ProductItem";
 import { useSearchParams } from "next/navigation";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import { Check } from "lucide-react";
-import { Loader2 } from "lucide-react"; 
+import { Check, Loader2 } from "lucide-react";
 import LoadingSpinner from "../components/spinner/LoadingSpinner";
 
 const ITEMS_PER_PAGE = 6;
@@ -56,7 +56,8 @@ const toArabicNumeral = (num: number): string => {
   return String(num).split("").map(d => arabic[+d]).join("");
 };
 
-export default function ProductsPage() {
+
+const ProductsContent = () => {
   const searchParams = useSearchParams();
   const urlCategoryId = searchParams.get("category_id");
 
@@ -100,9 +101,7 @@ export default function ProductsPage() {
     : "جميع التصنيفات";
 
   return (
-    <Suspense fallback={<LoadingSpinner />}>
     <div dir="rtl" className="w-screen flex flex-col min-h-screen">
-    
       <header
         style={{
           backgroundImage: "url('/products.webp')",
@@ -116,14 +115,12 @@ export default function ProductsPage() {
       </header>
 
       <div className="container mx-auto px-4 py-8 flex gap-10 flex-col lg:flex-row">
-
         <aside>
           <Command className="w-64 h-full bg-slate-50 border shadow-md">
             <CommandInput placeholder="ابحث عن تصنيف أو ترتيب..." />
             <CommandList>
               <CommandEmpty>لا توجد نتائج</CommandEmpty>
 
-              {/* Category Group */}
               <CommandGroup heading="التصنيف">
                 <CommandItem
                   onSelect={() => {
@@ -152,40 +149,27 @@ export default function ProductsPage() {
                 ))}
               </CommandGroup>
 
-              {/* Sort Group */}
               <CommandGroup heading="ترتيب حسب">
-                <CommandItem
-                  onSelect={() => setSortBy("created_at")}
-                  className="cursor-pointer"
-                >
+                <CommandItem onSelect={() => setSortBy("created_at")} className="cursor-pointer">
                   <Check className={`ml-2 h-4 w-4 ${sortBy === "created_at" ? "opacity-100" : "opacity-0"}`} />
                   الأحدث أولاً
                 </CommandItem>
-                <CommandItem
-                  onSelect={() => setSortBy("price")}
-                  className="cursor-pointer"
-                >
+                <CommandItem onSelect={() => setSortBy("price")} className="cursor-pointer">
                   <Check className={`ml-2 h-4 w-4 ${sortBy === "price" ? "opacity-100" : "opacity-0"}`} />
                   السعر: من الأقل
                 </CommandItem>
-                
               </CommandGroup>
-       
             </CommandList>
-      
           </Command>
-
-         
         </aside>
 
-       
         <main className="flex-1">
-            
           <div className="text-sm mb-5 text-center text-muted-foreground">
             المختار: <strong>{selectedCategoryName}</strong>
             {sortBy === "price" && " • من الأقل إلى الأعلى"}
             {sortBy === "created_at" && " • الأحدث أولاً"}
           </div>
+
           {isLoading ? (
             <div className="flex justify-center items-center h-96">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -244,6 +228,14 @@ export default function ProductsPage() {
         </main>
       </div>
     </div>
+  );
+};
+
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <ProductsContent />
     </Suspense>
   );
 }
