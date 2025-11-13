@@ -1,0 +1,8 @@
+NOTE:
+
+you might encounter this error in console or in dev console
+(node:1908) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+----
+this error happened because of the use of axios with next 16, in the Featured.tsx i replaced axios with fetch() and the error was fixed!

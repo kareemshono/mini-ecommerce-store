@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import {
@@ -15,6 +15,7 @@ import { useSearchParams } from "next/navigation";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Check } from "lucide-react";
 import { Loader2 } from "lucide-react"; 
+import LoadingSpinner from "../components/spinner/LoadingSpinner";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -99,6 +100,7 @@ export default function ProductsPage() {
     : "جميع التصنيفات";
 
   return (
+    <Suspense fallback={<LoadingSpinner />}>
     <div dir="rtl" className="w-screen flex flex-col min-h-screen">
     
       <header
@@ -242,5 +244,6 @@ export default function ProductsPage() {
         </main>
       </div>
     </div>
+    </Suspense>
   );
 }
